@@ -27,11 +27,16 @@ The script organizes files into the following categories:
     ```
 
 2.  Run the script:
-    ```bash
-    python File_Organizer.py
-    ```
+    *   To organize your **Downloads** folder (default):
+        ```bash
+        python File_Organizer.py
+        ```
+    *   To organize a **specific folder**:
+        ```bash
+        python File_Organizer.py "C:\Path\To\Your\Folder"
+        ```
 
-The script will scan your `Downloads` directory and move files into their respective folders.
+The script will scan the specified directory and move files into their respective folders.
 
 ## Customization
 

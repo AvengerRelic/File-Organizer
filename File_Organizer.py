@@ -64,6 +64,12 @@ def organize_downloads(path=None):
             shutil.move(str(file_path), str(dest_path))
             print(f"Moved: {file_path.name} -> Others/{dest_path.name}")
 
+import argparse
+
 if __name__ == "__main__":
-    organize_downloads()
+    parser = argparse.ArgumentParser(description="Organize files in a directory based on their extensions.")
+    parser.add_argument("directory", nargs="?", help="The directory to organize. Defaults to the Downloads folder.")
+    args = parser.parse_args()
+    
+    organize_downloads(args.directory)
     print("Cleanup complete!")
