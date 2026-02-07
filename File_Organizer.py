@@ -2,9 +2,12 @@ import os
 import shutil
 from pathlib import Path
 
-def organize_downloads():
+def organize_downloads(path=None):
     # Path to your downloads folder
-    download_path = Path.home() / "Downloads"
+    if path is None:
+        download_path = Path.home() / "Downloads"
+    else:
+        download_path = Path(path)
     
     # Define mapping of file types to folder names
     file_types = {
@@ -28,16 +31,38 @@ def organize_downloads():
             if file_ext in extensions:
                 dest_dir = download_path / category
                 dest_dir.mkdir(exist_ok=True)
-                shutil.move(str(file_path), str(dest_dir / file_path.name))
-                print(f"Moved: {file_path.name} -> {category}")
+                
+                dest_path = dest_dir / file_path.name
+                if dest_path.exists():
+                    base = dest_path.stem
+                    suffix = dest_path.suffix
+                    counter = 1
+                    while dest_path.exists():
+                        dest_path = dest_dir / f"{base} ({counter}){suffix}"
+                        counter += 1
+                
+                shutil.move(str(file_path), str(dest_path))
+                print(f"Moved: {file_path.name} -> {dest_path.name}")
                 moved = True
                 break
         
         # Optional: Move unknown types to an 'Others' folder
+        # Optional: Move unknown types to an 'Others' folder
         if not moved:
             others_dir = download_path / "Others"
             others_dir.mkdir(exist_ok=True)
-            shutil.move(str(file_path), str(others_dir / file_path.name))
+            
+            dest_path = others_dir / file_path.name
+            if dest_path.exists():
+                base = dest_path.stem
+                suffix = dest_path.suffix
+                counter = 1
+                while dest_path.exists():
+                    dest_path = others_dir / f"{base} ({counter}){suffix}"
+                    counter += 1
+                    
+            shutil.move(str(file_path), str(dest_path))
+            print(f"Moved: {file_path.name} -> Others/{dest_path.name}")
 
 if __name__ == "__main__":
     organize_downloads()
